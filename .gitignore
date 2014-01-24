@@ -4,3 +4,4 @@ SportsStore.UnitTests/bin/
 SportsStore.UnitTests/obj/
 SportsStore.WebUI/bin/
 SportsStore.WebUI/obj/
+SportsStore.WebUI/obj/Debug/*
