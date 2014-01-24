@@ -1,0 +1,6 @@
+SportsStore.Domain/bin/
+SportsStore.Domain/obj/
+SportsStore.UnitTests/bin/
+SportsStore.UnitTests/obj/
+SportsStore.WebUI/bin/
+SportsStore.WebUI/obj/
