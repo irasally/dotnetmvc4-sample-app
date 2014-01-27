@@ -1,9 +1,14 @@
-﻿using SportsStore.WebUI.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
-using SportsStore.Domain.Abstract;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
+using Moq;
+using SportsStore.Domain.Abstract;
+using SportsStore.Domain.Entities;
+using SportsStore.WebUI.Controllers;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace SportsStore.UnitTests
 {
@@ -67,26 +72,27 @@ namespace SportsStore.UnitTests
         #endregion
 
 
-        /// <summary>
-        ///List のテスト
-        ///</summary>
-        // TODO: UrlToTest 属性が ASP.NET ページへの URL を指定していることを確認します (たとえば、
-        // http://.../Default.aspx)。これはページ、Web サービス、または WCF サービスのいずれをテストする
-        //場合でも、Web サーバー上で単体テストを実行するために必要です。
-        [TestMethod()]
-        [HostType("ASP.NET")]
-        [AspNetDevelopmentServerHost("C:\\Users\\sari\\Documents\\Visual Studio 2010\\Projects\\SportsStore\\SportsStore.WebUI", "/")]
-        [UrlToTest("http://localhost:50776/")]
-        public void ListTest()
+        [TestMethod]
+        public void Can_Paginate()
         {
-            IProductRepository productRepository = null; // TODO: 適切な値に初期化してください
-            ProductController target = new ProductController(productRepository); // TODO: 適切な値に初期化してください
-            int page = 0; // TODO: 適切な値に初期化してください
-            ViewResult expected = null; // TODO: 適切な値に初期化してください
-            ViewResult actual;
-            actual = target.List(page);
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("このテストメソッドの正確性を確認します。");
+            Mock<IProductRepository> mock = new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(new Product[]{
+                new Product{ProductID = 1, Name ="p1"},
+                new Product{ProductID = 2, Name ="p2"},
+                new Product{ProductID = 3, Name ="p3"},
+                new Product{ProductID = 4, Name ="p4"},
+                new Product{ProductID = 5, Name ="p5"}
+            }.AsQueryable());
+
+            ProductController target = new ProductController(mock.Object);
+            target.PageSize = 3;
+
+            IEnumerable<Product> result = (IEnumerable<Product>)target.List(2).Model;
+            Product[] actual = result.ToArray();
+
+            Assert.AreEqual(actual.Length, 2);
+            Assert.AreEqual(actual[0].Name, "p4");
+            Assert.AreEqual(actual[1].Name, "p5");
         }
     }
 }
