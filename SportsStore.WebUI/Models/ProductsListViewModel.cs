@@ -6,7 +6,7 @@ using SportsStore.Domain.Entities;
 
 namespace SportsStore.WebUI.Models
 {
-    public class ProductListViewModel
+    public class ProductsListViewModel
     {
         public IEnumerable<Product> Products { get; set; }
         public PagingInfo PagingInfo { get; set; }
