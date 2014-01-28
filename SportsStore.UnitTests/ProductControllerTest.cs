@@ -96,5 +96,28 @@ namespace SportsStore.UnitTests
             Assert.AreEqual(actual[1].Name, "p5");
         }
 
+        [TestMethod]
+        public void Can_Send_Pagination_View_Model()
+        {
+            Mock<IProductRepository> mock = new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(new Product[]{
+                new Product{ProductID = 1, Name ="p1"},
+                new Product{ProductID = 2, Name ="p2"},
+                new Product{ProductID = 3, Name ="p3"},
+                new Product{ProductID = 4, Name ="p4"},
+                new Product{ProductID = 5, Name ="p5"}
+            }.AsQueryable());
+
+            ProductController target = new ProductController(mock.Object);
+            target.PageSize = 3;
+
+            ProductsListViewModel result = (ProductsListViewModel)target.List(2).Model;
+            PagingInfo actual = result.PagingInfo;
+
+            Assert.AreEqual(actual.CurrentPage, 2);
+            Assert.AreEqual(actual.ItemsPerPage, 3);
+            Assert.AreEqual(actual.TotalItems, 5);
+            Assert.AreEqual(actual.TotalPages, 2);
+        }
     }
 }
