@@ -9,6 +9,7 @@ using SportsStore.Domain.Entities;
 using SportsStore.WebUI.Controllers;
 using System.Collections;
 using System.Collections.Generic;
+using SportsStore.WebUI.Models;
 
 namespace SportsStore.UnitTests
 {
@@ -87,12 +88,13 @@ namespace SportsStore.UnitTests
             ProductController target = new ProductController(mock.Object);
             target.PageSize = 3;
 
-            IEnumerable<Product> result = (IEnumerable<Product>)target.List(2).Model;
-            Product[] actual = result.ToArray();
+            ProductsListViewModel result = (ProductsListViewModel)target.List(2).Model;
+            Product[] actual = result.Products.ToArray();
 
             Assert.AreEqual(actual.Length, 2);
             Assert.AreEqual(actual[0].Name, "p4");
             Assert.AreEqual(actual[1].Name, "p5");
         }
+
     }
 }
