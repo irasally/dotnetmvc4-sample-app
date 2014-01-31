@@ -82,3 +82,16 @@ div.pager { text-align:right; border-top: 2px solid silver; padding: .5em 0 0 0;
 div.pager A { font-size: 1.1em; color: #666; text-decoration: none; padding: 0 .4em 0 .4em; }
 div.pager A:hover { background-color: Silver; }
 div.pager A.selected { background-color: #353535; color: White; }
+
+div#categories A 
+{
+    font: bold 1.1em "Arial Narrow", "Frankln Gothic Medium", Arial;
+    display:block;
+    text-decoration: none;
+    padding: .6em;
+    color: Black;
+    border-bottom: 1pz solid silver;
+}
+div#categories A:hover { background-color: #CCC; }
+div#categories A.selected { background-color: #666; color: White;}
+div#categories A.selected:hover { background-color: #666}
