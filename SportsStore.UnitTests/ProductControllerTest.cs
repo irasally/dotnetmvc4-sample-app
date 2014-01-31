@@ -88,7 +88,7 @@ namespace SportsStore.UnitTests
             ProductController target = new ProductController(mock.Object);
             target.PageSize = 3;
 
-            ProductsListViewModel result = (ProductsListViewModel)target.List(2).Model;
+            ProductsListViewModel result = (ProductsListViewModel)target.List(null, 2).Model;
             Product[] actual = result.Products.ToArray();
 
             Assert.AreEqual(actual.Length, 2);
@@ -111,7 +111,7 @@ namespace SportsStore.UnitTests
             ProductController target = new ProductController(mock.Object);
             target.PageSize = 3;
 
-            ProductsListViewModel result = (ProductsListViewModel)target.List(2).Model;
+            ProductsListViewModel result = (ProductsListViewModel)target.List(null, 2).Model;
             PagingInfo actual = result.PagingInfo;
 
             Assert.AreEqual(actual.CurrentPage, 2);
