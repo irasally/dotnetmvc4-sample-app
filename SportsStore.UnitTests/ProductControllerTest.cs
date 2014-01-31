@@ -88,7 +88,7 @@ namespace SportsStore.UnitTests
             ProductController target = new ProductController(mock.Object);
             target.PageSize = 3;
 
-            ProductsListViewModel result = (ProductsListViewModel)target.List(2).Model;
+            ProductsListViewModel result = (ProductsListViewModel)target.List(null, 2).Model;
             Product[] actual = result.Products.ToArray();
 
             Assert.AreEqual(actual.Length, 2);
@@ -111,13 +111,66 @@ namespace SportsStore.UnitTests
             ProductController target = new ProductController(mock.Object);
             target.PageSize = 3;
 
-            ProductsListViewModel result = (ProductsListViewModel)target.List(2).Model;
+            ProductsListViewModel result = (ProductsListViewModel)target.List(null, 2).Model;
             PagingInfo actual = result.PagingInfo;
 
             Assert.AreEqual(actual.CurrentPage, 2);
             Assert.AreEqual(actual.ItemsPerPage, 3);
             Assert.AreEqual(actual.TotalItems, 5);
             Assert.AreEqual(actual.TotalPages, 2);
+        }
+
+        [TestMethod]
+        public void Can_Filter_Products()
+        {
+            Mock<IProductRepository> mock = new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(new Product[]{
+                new Product{ProductID = 1, Name ="p1", Category="Cat1"},
+                new Product{ProductID = 2, Name ="p2", Category="Cat2"},
+                new Product{ProductID = 3, Name ="p3", Category="Cat2"},
+                new Product{ProductID = 4, Name ="p4", Category="Cat1"},
+                new Product{ProductID = 5, Name ="p5", Category="Cat3"}
+            }.AsQueryable());
+
+            ProductController target = new ProductController(mock.Object);
+            target.PageSize = 3;
+
+            ProductsListViewModel result = (ProductsListViewModel)target.List("Cat1", 1).Model;
+            Product[] actual = result.Products.ToArray();
+
+            Assert.AreEqual(result.CurrentCategory, "Cat1");
+            Assert.AreEqual(actual.Length, 2);
+            Assert.AreEqual(actual[0].Name, "p1");
+            Assert.AreEqual(actual[0].Category, "Cat1");
+            Assert.AreEqual(actual[1].Name, "p4");
+            Assert.AreEqual(actual[1].Category, "Cat1");
+        }
+
+        [TestMethod]
+        public void Generate_Category_Specific_Product_Count()
+        {
+            Mock<IProductRepository> mock = new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(new Product[]{
+                new Product{ProductID = 1, Name ="p1", Category="Cat1"},
+                new Product{ProductID = 2, Name ="p2", Category="Cat2"},
+                new Product{ProductID = 3, Name ="p3", Category="Cat2"},
+                new Product{ProductID = 4, Name ="p4", Category="Cat1"},
+                new Product{ProductID = 5, Name ="p5", Category="Cat3"}
+            }.AsQueryable());
+
+            ProductController target = new ProductController(mock.Object);
+            target.PageSize = 3;
+
+            ProductsListViewModel resCat1 = (ProductsListViewModel)target.List("Cat1").Model;
+            ProductsListViewModel resCat2 = (ProductsListViewModel)target.List("Cat2").Model;
+            ProductsListViewModel resCat3 = (ProductsListViewModel)target.List("Cat3").Model;
+            ProductsListViewModel resAll = (ProductsListViewModel)target.List(null).Model;
+
+
+            Assert.AreEqual(resCat1.PagingInfo.TotalItems, 2);
+            Assert.AreEqual(resCat2.PagingInfo.TotalItems, 2);
+            Assert.AreEqual(resCat3.PagingInfo.TotalItems, 1);
+            Assert.AreEqual(resAll.PagingInfo.TotalItems, 5);
         }
     }
 }
