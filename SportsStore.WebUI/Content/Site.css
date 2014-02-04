@@ -95,3 +95,10 @@ div#categories A
 div#categories A:hover { background-color: #CCC; }
 div#categories A.selected { background-color: #666; color: White;}
 div#categories A.selected:hover { background-color: #666}
+
+form{ margin:0; padding:0;}
+div.item form{float: right;}
+div.item input
+{
+    color:White; background-color: #333; border:1px solid black; cursor:pointer;
+}
