@@ -120,5 +120,21 @@ namespace SportsStore.UnitTests
             Assert.AreEqual(target.Lines.Count(), 2);
         }
 
+        [TestMethod]
+        public void Calculate_Cart_Total()
+        {
+            Product p1 = new Product { ProductID = 1, Name = "p1", Price = 100M };
+            Product p2 = new Product { ProductID = 2, Name = "p2", Price = 50M };
+
+            Cart target = new Cart();
+
+            target.AddItem(p1, 1);
+            target.AddItem(p2, 1);
+            target.AddItem(p1, 3);
+            decimal actual = target.ComputeTotlaValue();
+
+            Assert.AreEqual(actual, 450M);
+        }
+
     }
 }
