@@ -100,7 +100,25 @@ namespace SportsStore.UnitTests
             Assert.AreEqual(actual[0].Quantity, 11);
             Assert.AreEqual(actual[1].Product, p2);
             Assert.AreEqual(actual[1].Quantity, 1);
-
         }
+
+        [TestMethod]
+        public void Can_Remove_Line()
+        {
+            Product p1 = new Product { ProductID = 1, Name = "p1" };
+            Product p2 = new Product { ProductID = 2, Name = "p2" };
+            Product p3 = new Product { ProductID = 3, Name = "p3" };
+
+            Cart target = new Cart();
+
+            target.AddItem(p1, 1);
+            target.AddItem(p2, 3);
+            target.AddItem(p3, 5);
+            target.RermoveLine(p2);
+
+            Assert.AreEqual(target.Lines.Where(l => l.Product.ProductID == p2.ProductID).Count(), 0);
+            Assert.AreEqual(target.Lines.Count(), 2);
+        }
+
     }
 }
