@@ -136,5 +136,19 @@ namespace SportsStore.UnitTests
             Assert.AreEqual(actual, 450M);
         }
 
+        [TestMethod]
+        public void Can_Clear_Contents()
+        {
+            Product p1 = new Product { ProductID = 1, Name = "p1", Price = 100M };
+            Product p2 = new Product { ProductID = 2, Name = "p2", Price = 50M };
+
+            Cart target = new Cart();
+
+            target.AddItem(p1, 1);
+            target.AddItem(p2, 1);
+            target.Clear();
+
+            Assert.AreEqual(target.Lines.Count(), 0);
+        }
     }
 }
