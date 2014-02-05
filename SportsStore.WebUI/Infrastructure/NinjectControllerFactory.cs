@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Configuration;
 using SportsStore.Domain.Abstract;
 using Ninject;
 using Moq;
@@ -29,6 +30,13 @@ namespace SportsStore.WebUI.Infrastructure
         private void AddBinds()
         {
             ninjectKernel.Bind<IProductRepository>().To<EFProductRepositry>();
+
+            EmailSettings emailSettings = new EmailSettings
+            {
+                WriteAsFile = bool.Parse(ConfigurationManager.AppSettings["Email.WriteAsFile" ?? "false"])
+            };
+
+            ninjectKernel.Bind<IOrderProcessor>().To<EmailOrderProcessor>().WithConstructorArgument("settings", emailSettings);
         }
     }
 }
