@@ -1,5 +1,6 @@
 SportsStore.Domain/bin/
 SportsStore.Domain/obj/
+SportsStore.Domain/App.config
 SportsStore.UnitTests/bin/
 SportsStore.UnitTests/obj/
 SportsStore.WebUI/bin/
