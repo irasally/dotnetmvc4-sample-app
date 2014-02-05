@@ -51,5 +51,10 @@ namespace SportsStore.WebUI.Controllers
         {
             return View(cart);
         }
+
+        public ActionResult Checkout()
+        {
+            return View(new ShippingDetails());
+        }
     }
 }
