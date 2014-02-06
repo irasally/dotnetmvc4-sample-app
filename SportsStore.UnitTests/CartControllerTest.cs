@@ -80,7 +80,7 @@ namespace SportsStore.UnitTests
 
             Cart cart = new Cart();
 
-            CartController target = new CartController(mock.Object);
+            CartController target = new CartController(mock.Object, null);
             target.AddToCart(cart, 1, null);
 
             Assert.AreEqual(cart.Lines.Count(), 1 );
@@ -97,7 +97,7 @@ namespace SportsStore.UnitTests
 
             Cart cart = new Cart();
 
-            CartController target = new CartController(mock.Object);
+            CartController target = new CartController(mock.Object, null);
             
             RedirectToRouteResult actual = target.AddToCart(cart, 2, "myUrl");
 
@@ -110,7 +110,7 @@ namespace SportsStore.UnitTests
         {
             Cart cart = new Cart();
 
-            CartController target = new CartController(null);
+            CartController target = new CartController(null, null);
 
             CartIndexViewModel actual = (CartIndexViewModel)target.Index(cart, "myUrl").ViewData.Model;
 
