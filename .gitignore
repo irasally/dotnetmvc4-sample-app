@@ -1,9 +1,9 @@
 SportsStore.Domain/bin/
 SportsStore.Domain/obj/
-SportsStore.Domain/App.config
 SportsStore.UnitTests/bin/
 SportsStore.UnitTests/obj/
 SportsStore.WebUI/bin/
 SportsStore.WebUI/obj/
 SportsStore.WebUI/obj/Debug/*
+SportsStore.WebUI/Web.config
 TestResults/
