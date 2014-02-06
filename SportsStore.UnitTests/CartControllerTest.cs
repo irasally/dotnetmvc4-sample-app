@@ -80,7 +80,7 @@ namespace SportsStore.UnitTests
 
             Cart cart = new Cart();
 
-            CartController target = new CartController(mock.Object);
+            CartController target = new CartController(mock.Object, null);
             target.AddToCart(cart, 1, null);
 
             Assert.AreEqual(cart.Lines.Count(), 1 );
@@ -97,7 +97,7 @@ namespace SportsStore.UnitTests
 
             Cart cart = new Cart();
 
-            CartController target = new CartController(mock.Object);
+            CartController target = new CartController(mock.Object, null);
             
             RedirectToRouteResult actual = target.AddToCart(cart, 2, "myUrl");
 
@@ -110,7 +110,7 @@ namespace SportsStore.UnitTests
         {
             Cart cart = new Cart();
 
-            CartController target = new CartController(null);
+            CartController target = new CartController(null, null);
 
             CartIndexViewModel actual = (CartIndexViewModel)target.Index(cart, "myUrl").ViewData.Model;
 
@@ -118,5 +118,51 @@ namespace SportsStore.UnitTests
             Assert.AreEqual(actual.ReturnUrl, "myUrl");
         }
 
+        [TestMethod]
+        public void Cannot_Checkout_Empty_Cart()
+        {
+            Mock<IOrderProcessor> mock = new Mock<IOrderProcessor>();
+
+            CartController target = new CartController(null, mock.Object);
+
+            ViewResult actual = target.Checkout(new Cart(), new ShippingDetails());
+
+            mock.Verify(m => m.ProcessOrder(It.IsAny<Cart>(), It.IsAny<ShippingDetails>()), Times.Never());
+            Assert.AreEqual("", actual.ViewName);
+            Assert.AreEqual(false, actual.ViewData.ModelState.IsValid);
+        }
+
+        [TestMethod]
+        public void Cannot_Checkout_Invalid_ShippingDatails()
+        {
+            Mock<IOrderProcessor> mock = new Mock<IOrderProcessor>();
+            Cart cart = new Cart();
+            cart.AddItem(new Product(), 1);
+            
+            CartController target = new CartController(null, mock.Object);
+            target.ModelState.AddModelError("error", "error");
+
+            ViewResult actual = target.Checkout(cart, new ShippingDetails());
+
+            mock.Verify(m => m.ProcessOrder(It.IsAny<Cart>(), It.IsAny<ShippingDetails>()), Times.Never());
+            Assert.AreEqual("", actual.ViewName);
+            Assert.AreEqual(false, actual.ViewData.ModelState.IsValid);
+        }
+
+        [TestMethod]
+        public void Can_Checkout_And_Submit_Order()
+        {
+            Mock<IOrderProcessor> mock = new Mock<IOrderProcessor>();
+            Cart cart = new Cart();
+            cart.AddItem(new Product(), 1);
+
+            CartController target = new CartController(null, mock.Object);
+
+            ViewResult actual = target.Checkout(cart, new ShippingDetails());
+
+            mock.Verify(m => m.ProcessOrder(It.IsAny<Cart>(), It.IsAny<ShippingDetails>()), Times.Once());
+            Assert.AreEqual("Completed", actual.ViewName);
+            Assert.AreEqual(true, actual.ViewData.ModelState.IsValid);
+        }
     }
 }
