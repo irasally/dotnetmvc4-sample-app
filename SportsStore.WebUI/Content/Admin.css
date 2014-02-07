@@ -64,3 +64,24 @@ div.message
 {
     display: none;
 }
+.editor_field
+{
+    margin-bottom: .8em;
+}
+.editor_label 
+{
+    font-weight: bold;
+}
+.editor_label:after
+{
+    content: ":";
+}
+.text-box 
+{
+    width: 25em;
+}
+.multi-line 
+{
+    height: 5em;
+    font-family: Segoe UI, Verdana;
+}
