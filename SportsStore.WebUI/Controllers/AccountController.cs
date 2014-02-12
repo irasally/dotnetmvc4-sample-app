@@ -12,7 +12,7 @@ namespace SportsStore.WebUI.Controllers
     {
         IAuthProvider authProvider;
 
-        public void AccountController(IAuthProvider auth)
+        public AccountController(IAuthProvider auth)
         {
             authProvider = auth;
         }
