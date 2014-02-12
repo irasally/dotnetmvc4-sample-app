@@ -110,6 +110,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountControllerTest.cs" />
     <Compile Include="AdminControllerTest.cs" />
     <Compile Include="CartControllerTest.cs" />
     <Compile Include="CartTest.cs" />
