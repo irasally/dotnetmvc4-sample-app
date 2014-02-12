@@ -131,7 +131,7 @@ namespace SportsStore.UnitTests
             Product product = new Product { Name = "Test" };
             AdminController target = new AdminController(mock.Object);
             
-            ActionResult actual = target.Edit(product);
+            ActionResult actual = target.Edit(product, null);
 
             mock.Verify(m => m.SaveProduct(product));
             Assert.IsNotInstanceOfType(actual, typeof(ViewResult));
@@ -145,7 +145,7 @@ namespace SportsStore.UnitTests
             AdminController target = new AdminController(mock.Object);
             target.ModelState.AddModelError("error", "error");
 
-            ActionResult actual = target.Edit(product);
+            ActionResult actual = target.Edit(product, null);
 
             mock.Verify(m => m.SaveProduct(It.IsAny<Product>()), Times.Never());
             Assert.IsInstanceOfType(actual, typeof(ViewResult));

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SportsStore.Domain.Abstract;
 using SportsStore.Domain.Entities;
+using System.Data;
 
 namespace SportsStore.Domain.Concrete
 {
@@ -21,6 +22,11 @@ namespace SportsStore.Domain.Concrete
             if (product.ProductID == 0)
             {
                 context.Products.Add(product);
+            }
+            else
+            {
+                context.Products.Attach(product);
+                context.Entry(product).State = EntityState.Modified;
             }
             context.SaveChanges();
         }
